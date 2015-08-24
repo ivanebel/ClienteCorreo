@@ -147,20 +147,23 @@ namespace ClienteCorreo.Correo
                     AttachmentCollection coleccionadjuntos = mensajeObtenido.Attachments;
                     List<AttachmentDTO> adjuntos = new List<AttachmentDTO>();
 
-                    //if (coleccionadjuntos.Count > 0) {
+                    if (coleccionadjuntos.Count > 0)
+                    {
 
-                    //    int maxid = Controller.Correo.getInstance().UltimoIdCorreo(cuenta);
+                        //No puedo usar esto porque previamente limpié la tabla de correos, por lo tanto no hay id.
+                        //int maxid = Controller.Correo.getInstance().UltimoIdCorreo(cuenta);
 
-                    //    foreach (Attachment adj in coleccionadjuntos) {
-                    //        AttachmentDTO adjunto = new AttachmentDTO();
-                            
-                    //        adjunto.IdCorreo = maxid + 1;
-                    //        adjunto.Name = adj.Name;
-                    //        adjunto.Path = adj.ContentStream.ToString();        //OJO
-                            
-                    //        adjuntos.Add(adjunto);
-                    //    }
-                    //}
+                        foreach (Attachment adj in coleccionadjuntos)
+                        {
+                            AttachmentDTO adjunto = new AttachmentDTO();
+
+                            //adjunto.IdCorreo = maxid + 1;
+                            adjunto.Name = adj.Name;
+                            adjunto.Path = adj.ContentStream.ToString();        //OJO
+
+                            adjuntos.Add(adjunto);
+                        }
+                    }
 
                     correo.Adjuntos = adjuntos;
 

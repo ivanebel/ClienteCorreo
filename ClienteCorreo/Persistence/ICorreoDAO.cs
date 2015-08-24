@@ -15,7 +15,7 @@ namespace ClienteCorreo.Persistence
 
         int update(CorreoDTO correo);
 
-        int markAsRead(CorreoDTO correo);
+        int markAsRead(CorreoDTO correo, bool leido);
 
         List<CorreoDTO> list(bool read, bool sent, int cant, CuentaDTO cuenta = null);
 

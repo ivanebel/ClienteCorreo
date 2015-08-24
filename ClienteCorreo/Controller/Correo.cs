@@ -72,14 +72,15 @@ namespace ClienteCorreo.Controller
         }
 
         /// <summary>
-        /// Método para marcar un Correo como leído.
+        /// Método para marcar un Correo como leído o como no leído.
         /// </summary>
         /// <param name="correo"></param>
-        public void marcarComoLeido(CorreoDTO correo) {
+        public void marcarComoLeido(CorreoDTO correo, bool leido) {
             factory.startConnection();
-            factory.getCorreo().markAsRead(correo);
+            factory.getCorreo().markAsRead(correo, leido);
             factory.closeConnection();
         }
+
 
         /// <summary>
         /// Método para obtener todos los correos de las cuentas en el sistema.

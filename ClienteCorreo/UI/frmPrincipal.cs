@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Drawing;
 
 using ClienteCorreo.Controller;
 using ClienteCorreo.DTO;
@@ -18,7 +19,7 @@ namespace ClienteCorreo.UI
         private Dictionary<int,String> nombreCuentas;
         private int cantidadNoLeidos = 0;
         private string selectednode = "inbox";
-        private int correoseleccionado = 0;
+        public int correoseleccionado = 0;
 
         public int maxcorreos = 0;
 
@@ -38,7 +39,8 @@ namespace ClienteCorreo.UI
         private void frmPrincipal_Load(object sender, EventArgs e)
         {
             treeMenu.ExpandAll();
-            
+
+            ActualizarTreeView();
             ActualizarDatos(selectednode);
             //Recibo mails
             //Recibir();
@@ -82,14 +84,15 @@ namespace ClienteCorreo.UI
                     
                     //Si DB < POP
                     if (cantidadMailsDb < cantidadMailsPop && cantidadMailsDb != 0) {
-                        List<CorreoDTO> listaCorreosDb = Controller.Correo.getInstance().listar(false, false, cuentaObtenida);
-                        foreach (CorreoDTO correo in listaCorreosDb) {
-                            Controller.Correo.getInstance().eliminarCorreo(correo);
-                        }
                         //Por cada correo obtenido:
+                        List<CorreoDTO> listaCorreosDb = Controller.Correo.getInstance().listar(false, false, cuentaObtenida);
                             //Borrar su OrigenDestino
                             //Borrar su Adjunto
                             //Borrar el correo
+                        foreach (CorreoDTO correo in listaCorreosDb) {
+                            Controller.Correo.getInstance().eliminarCorreo(correo);
+                        }
+                        
                         //Obtengo lista de mails de POP
                         List<CorreoDTO> listaCorreos = Correo.MailServer.getInstance().leerCorreo(cuentaObtenida);
                         foreach (CorreoDTO correo in listaCorreos)
@@ -185,23 +188,60 @@ namespace ClienteCorreo.UI
             dgvMensajes.Columns[5].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgvMensajes.Columns[6].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             dgvMensajes.Columns[2].AutoSizeMode = DataGridViewAutoSizeColumnMode.Fill;
+            dgvMensajes.Columns[0].Visible = false;
+            dgvMensajes.Columns[4].Visible = false;
+            dgvMensajes.Columns[6].Visible = false;
+
+            DataGridViewImageColumn imgCol = new DataGridViewImageColumn();
+            Image image = imageList1.Images[4];
+
+            dgvMensajes.Columns.Add(imgCol);
+            dgvMensajes.Columns[7].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
 
             cantidadNoLeidos = 0;
 
-            foreach (DataGridViewRow fila in dgvMensajes.Rows) {
-                if (fila.Cells["Leido"].Value.ToString() == "False") {
+            foreach (DataGridViewRow fila in dgvMensajes.Rows)
+            {
+                if (fila.Cells["Leido"].Value.ToString() == "False")
+                {
                     dgvMensajes.Rows[fila.Index].DefaultCellStyle.BackColor = Color.FromArgb(204, 227, 245);
                     dgvMensajes.Rows[fila.Index].DefaultCellStyle.Font = new Font(dgvMensajes.DefaultCellStyle.Font, FontStyle.Bold);
                     cantidadNoLeidos++;
                 }
             }
 
-            dgvMensajes.Columns[0].Visible = false;
-            dgvMensajes.Columns[4].Visible = false;
+            foreach (DataGridViewRow fila in dgvMensajes.Rows)
+            {
+                if (fila.Cells["Adjunto"].Value.ToString() == "A")
+                {
+                    dgvMensajes.Rows[fila.Index].Cells[7].Value = image;
+                }
+                else 
+                {
 
+                    dgvMensajes.Rows[fila.Index].Cells[7].Style.NullValue = null;
+                }
+            }
+            
             tsMensajes.Text = "Bandeja de Entrada: " + dgvMensajes.Rows.Count.ToString() + " mensajes";
 
             ActualizarTreeView();
+
+        }
+
+        private DataTable GetFormatoTabla()
+        {
+            DataTable modelo = new DataTable();
+
+            modelo.Columns.Add("Id");
+            modelo.Columns.Add("De");
+            modelo.Columns.Add("Asunto");
+            modelo.Columns.Add("Fecha");
+            modelo.Columns.Add("Leido");
+            modelo.Columns.Add("Cuenta");
+            modelo.Columns.Add("Adjunto");
+
+            return modelo;
 
         }
 
@@ -234,6 +274,7 @@ namespace ClienteCorreo.UI
                 {
                     treeMenu.Nodes[0].Nodes[0].Text = "Recibidos (" + cantidadNoLeidos.ToString() + ")";
                     treeMenu.Nodes[0].Nodes[0].NodeFont = new Font(treeMenu.Font, FontStyle.Bold);
+                    treeMenu.Nodes[0].Nodes[0].Toggle();
                     treeMenu.ExpandAll();
                 }
                 else
@@ -257,31 +298,7 @@ namespace ClienteCorreo.UI
 
         }
 
-        private DataTable GetFormatoTabla()
-        {
-            DataTable modelo = new DataTable();
 
-            modelo.Columns.Add("Id");
-            modelo.Columns.Add("De");
-            modelo.Columns.Add("Asunto");
-            modelo.Columns.Add("Fecha");
-            modelo.Columns.Add("Leido");
-            //DataGridViewImageColumn tipocolumna = new DataGridViewImageColumn();
-            modelo.Columns.Add("Cuenta");
-            modelo.Columns.Add("Adjunto");
-
-            //DataGridViewImageColumn imgCol = new DataGridViewImageColumn();
-            //Image image = imageList1.Images[4];
-            //imgCol.Image = image;
-
-            //modelo.Columns.Add(imgCol);
-            //img.HeaderText = "Image";
-            //img.Name = "img";
-
-
-            return modelo;
-
-        }
 
         private void dgvMensajes_CellClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -291,6 +308,7 @@ namespace ClienteCorreo.UI
             tbResponder.Enabled = true;
             tbReenviar.Enabled = true;
             tbEliminar.Enabled = true;
+            tbNoLeido.Enabled = true;
 
             DataGridViewRow filaseleccionada = dgvMensajes.SelectedRows[0];
             correoseleccionado = int.Parse(filaseleccionada.Cells["Id"].Value.ToString());
@@ -322,7 +340,10 @@ namespace ClienteCorreo.UI
             //Marcar como leído
             dgvMensajes.SelectedRows[0].DefaultCellStyle.Font = dgvMensajes.Font;
             dgvMensajes.SelectedRows[0].DefaultCellStyle.BackColor = dgvMensajes.DefaultCellStyle.BackColor;
-            Controller.Correo.getInstance().marcarComoLeido(correo);
+            Controller.Correo.getInstance().marcarComoLeido(correo,true);
+
+            //DataGridViewRow filaseleccionada = dgvMensajes.SelectedRows[0];
+            filaseleccionada.Cells["Leido"].Value = "True";
 
             cantidadNoLeidos = 0;
             foreach (DataGridViewRow fila in dgvMensajes.Rows)
@@ -445,6 +466,88 @@ namespace ClienteCorreo.UI
             nuevocorreo.PrepararParaReenviar(correo);
 
             nuevocorreo.Show();
+        }
+
+        private void tbNoLeido_Click(object sender, EventArgs e)
+        {
+            if (correoseleccionado == 0)
+                return;
+
+            CorreoDTO correo = new CorreoDTO();
+            correo.IdCorreo = correoseleccionado;
+            Controller.Correo.getInstance().marcarComoLeido(correo,false);
+
+            foreach (DataGridViewRow fila in dgvMensajes.SelectedRows) 
+            {
+                dgvMensajes.Rows[fila.Index].Cells["Leido"].Value = "False";
+            }
+
+            cantidadNoLeidos = 0;
+            foreach (DataGridViewRow fila in dgvMensajes.Rows)
+            {
+                if (fila.Cells["Leido"].Value.ToString() == "False" && selectednode == "inbox")
+                {
+                    dgvMensajes.Rows[fila.Index].DefaultCellStyle.BackColor = Color.FromArgb(204, 227, 245);
+                    dgvMensajes.Rows[fila.Index].DefaultCellStyle.Font = new Font(dgvMensajes.DefaultCellStyle.Font, FontStyle.Bold);
+                    cantidadNoLeidos++;
+                }
+            }
+
+            ActualizarTreeView();
+        }
+
+        private void dgvMensajes_SelectionChanged(object sender, EventArgs e)
+        {
+            if (dgvMensajes.SelectedRows.Count > 1)
+            {
+                tbResponder.Enabled = false;
+                tbReenviar.Enabled = false;
+            }
+            else
+            { 
+            
+            }
+        }
+
+        private void tbEliminar_Click(object sender, EventArgs e)
+        {
+            if (correoseleccionado == 0)
+                return;
+            if (dgvMensajes.SelectedRows.Count > 1) 
+            {
+                DialogResult res = MessageBox.Show("Está seguro de que desea eliminar los correos seleccionados?", "Cliente de Correo", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+                if (res == DialogResult.Yes)
+                {
+                    foreach (DataGridViewRow fila in dgvMensajes.SelectedRows) 
+                    {
+                        CorreoDTO correo = new CorreoDTO();
+                        correo.IdCorreo = int.Parse(fila.Cells["Id"].Value.ToString());
+                        Controller.Correo.getInstance().eliminarCorreo(correo);
+                    }
+                    
+                    MessageBox.Show("Los correos han sido eliminados.", "Cliente de Correo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    return;
+                }
+            }
+            else if (dgvMensajes.SelectedRows.Count == 1) 
+            {
+                DialogResult res = MessageBox.Show("Está seguro de que desea eliminar este correo?", "Cliente de Correo", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+                if (res == DialogResult.Yes)
+                {
+                    CorreoDTO correo = new CorreoDTO();
+                    correo.IdCorreo = correoseleccionado;
+                    Controller.Correo.getInstance().eliminarCorreo(correo);
+                    MessageBox.Show("El correo ha sido eliminado.", "Cliente de Correo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+                else
+                {
+                    return;
+                }
+            }
+            
         }
 
         

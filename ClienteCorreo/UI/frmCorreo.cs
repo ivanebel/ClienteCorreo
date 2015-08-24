@@ -90,6 +90,19 @@ namespace ClienteCorreo.UI
             
         }
 
+        private void TratamientoAdjuntos() {
+            if (correo.Adjuntos.Count < 1)
+                return;
+
+            tsAdjuntos.Text += ": " + correo.Adjuntos.Count.ToString();
+
+            foreach (AttachmentDTO adjunto in correo.Adjuntos) 
+            {
+                tsAdjuntos.DropDownItems.Add(adjunto.Name);
+            }
+
+        }
+
         private void wbCorreo_DocumentCompleted(object sender, WebBrowserDocumentCompletedEventArgs e)
         {
             
@@ -115,6 +128,62 @@ namespace ClienteCorreo.UI
         private void frmCorreo_MouseMove(object sender, MouseEventArgs e)
         {
             
+        }
+
+        private void tbResponder_Click(object sender, EventArgs e)
+        {
+            if (main.correoseleccionado == 0)
+                return;
+
+            CorreoDTO correo = new CorreoDTO();
+            correo.IdCorreo = main.correoseleccionado;
+            correo = Controller.Correo.getInstance().obtenerCorreo(correo);
+
+            List<OrigenDestinoDTO> origenes = correo.OrigenDestino;
+
+            frmNuevoCorreo nuevocorreo = new frmNuevoCorreo(main, "reply");
+            nuevocorreo.PrepararParaResponder(correo);
+
+            nuevocorreo.Show();
+
+            this.Close();
+        }
+
+        private void tbReenviar_Click(object sender, EventArgs e)
+        {
+            if (main.correoseleccionado == 0)
+                return;
+
+            CorreoDTO correo = new CorreoDTO();
+            correo.IdCorreo = main.correoseleccionado;
+            correo = Controller.Correo.getInstance().obtenerCorreo(correo);
+
+            frmNuevoCorreo nuevocorreo = new frmNuevoCorreo(main, "forward");
+            nuevocorreo.PrepararParaReenviar(correo);
+
+            nuevocorreo.Show();
+        }
+
+        private void tbEliminar_Click(object sender, EventArgs e)
+        {
+            if (main.correoseleccionado == 0)
+                return;
+
+            DialogResult res = MessageBox.Show("Está seguro de que desea eliminar este correo?", "Cliente de Correo", MessageBoxButtons.YesNo, MessageBoxIcon.Question, MessageBoxDefaultButton.Button2);
+            if (res == DialogResult.Yes)
+            {
+                CorreoDTO correo = new CorreoDTO();
+                correo.IdCorreo = main.correoseleccionado;
+                Controller.Correo.getInstance().eliminarCorreo(correo);
+                MessageBox.Show("El mensaje ha sido eliminado.", "Cliente de Correo", MessageBoxButtons.OK, MessageBoxIcon.Information);
+            }
+            else 
+            {
+                return;
+            }
+
+            
+
         }
     }
 }

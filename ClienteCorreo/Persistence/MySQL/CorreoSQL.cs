@@ -63,8 +63,21 @@ namespace ClienteCorreo.Persistence.MySQL
                 if (adjuntos != null) {
                     foreach (AttachmentDTO adjunto in adjuntos)
                     {
-                        adjunto.IdCorreo = generatedKey;
+                        
+                        try
+                        {
+                            myCommand.CommandText = "SELECT LAST_INSERT_ID()";
+                            string strId = myCommand.ExecuteScalar().ToString();
+                            adjunto.IdCorreo = int.Parse(strId);
+                        }
+                        catch (MySqlException e) 
+                        {
+                            adjunto.IdCorreo = 0;
+                        }
 
+                        //Necesito obtener el idcorreo generado en la query anterior.
+
+                        
                         try
                         {
                             myCommand.CommandText = "INSERT INTO adjunto (detalle,path,correo_idcorreo) VALUES " +
@@ -236,7 +249,7 @@ namespace ClienteCorreo.Persistence.MySQL
         /// </summary>
         /// <param name="correo"></param>
         /// <returns></returns>
-        public int markAsRead(CorreoDTO correo)
+        public int markAsRead(CorreoDTO correo, bool leido)
         {
             int res = 0;
 
@@ -246,7 +259,12 @@ namespace ClienteCorreo.Persistence.MySQL
                 MySqlCommand myCommand = new MySqlCommand();
                 myCommand.Connection = connection;
                 myCommand.CommandText = "UPDATE correo SET leido=?leido WHERE idcorreo=?idcorreo";
-                myCommand.Parameters.Add("?leido", MySqlDbType.Int16).Value = 1;
+
+                if(leido)
+                    myCommand.Parameters.Add("?leido", MySqlDbType.Int16).Value = 1;
+                else
+                    myCommand.Parameters.Add("?leido", MySqlDbType.Int16).Value = 0;
+
                 myCommand.Parameters.Add("?idcorreo", MySqlDbType.Int16).Value = correo.IdCorreo;
                 myCommand.ExecuteNonQuery();
 
