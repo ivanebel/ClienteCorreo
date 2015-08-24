@@ -1,0 +1,202 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">x86</Platform>
+    <ProductVersion>8.0.30703</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{D6FD5EF6-3DF0-43AA-83C8-115AFBE49D34}</ProjectGuid>
+    <OutputType>Exe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>ClienteCorreo</RootNamespace>
+    <AssemblyName>ClienteCorreo</AssemblyName>
+    <TargetFrameworkVersion>v4.0</TargetFrameworkVersion>
+    <TargetFrameworkProfile>Client</TargetFrameworkProfile>
+    <FileAlignment>512</FileAlignment>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|x86' ">
+    <PlatformTarget>x86</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="Controller\Configuracion.cs" />
+    <Compile Include="Controller\Correo.cs" />
+    <Compile Include="Controller\Cuenta.cs" />
+    <Compile Include="Controller\Server.cs" />
+    <Compile Include="Correo\IServerProperty.cs" />
+    <Compile Include="Correo\MailServer.cs" />
+    <Compile Include="Correo\Properties\Gmail.cs" />
+    <Compile Include="Correo\Properties\Outlook.cs" />
+    <Compile Include="Correo\Properties\Yahoo.cs" />
+    <Compile Include="Correo\ServerConfig.cs" />
+    <Compile Include="DTO\AttachmentDTO.cs" />
+    <Compile Include="DTO\ConfiguracionDTO.cs" />
+    <Compile Include="DTO\CorreoDTO.cs" />
+    <Compile Include="DTO\CuentaDTO.cs" />
+    <Compile Include="DTO\OrigenDestinoDTO.cs" />
+    <Compile Include="DTO\ServerDTO.cs" />
+    <Compile Include="DTO\Tipo.cs" />
+    <Compile Include="Persistence\ExceptionDAO.cs" />
+    <Compile Include="Persistence\Factory.cs" />
+    <Compile Include="Persistence\IConfiguracionDAO.cs" />
+    <Compile Include="Persistence\ICorreoDAO.cs" />
+    <Compile Include="Persistence\ICuentaDAO.cs" />
+    <Compile Include="Persistence\IServerDAO.cs" />
+    <Compile Include="Persistence\MySQL\ConfiguracionSQL.cs" />
+    <Compile Include="Persistence\MySQL\CorreoSQL.cs" />
+    <Compile Include="Persistence\MySQL\CuentaSQL.cs" />
+    <Compile Include="Persistence\MySQL\FactorySQL.cs" />
+    <Compile Include="Persistence\MySQL\ServerSQL.cs" />
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmConfig.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmConfig.Designer.cs">
+      <DependentUpon>frmConfig.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmCorreo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmCorreo.Designer.cs">
+      <DependentUpon>frmCorreo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmCuentas.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmCuentas.Designer.cs">
+      <DependentUpon>frmCuentas.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmNuevoCorreo.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmNuevoCorreo.Designer.cs">
+      <DependentUpon>frmNuevoCorreo.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmPrincipal.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmPrincipal.Designer.cs">
+      <DependentUpon>frmPrincipal.cs</DependentUpon>
+    </Compile>
+    <Compile Include="UI\frmServidores.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="UI\frmServidores.Designer.cs">
+      <DependentUpon>frmServidores.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Utils\AdminPop.cs" />
+    <Compile Include="Utils\AdminSmtp.cs" />
+    <Compile Include="Utils\Connection.cs" />
+    <Compile Include="Utils\PasajeCorreos.cs" />
+    <Compile Include="Utils\Pool.cs" />
+    <Compile Include="Utils\Property.cs" />
+    <Compile Include="Utils\Validator.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <Reference Include="MySql.Data">
+      <HintPath>..\..\Project911\Project911\bin\Release\MySql.Data.dll</HintPath>
+    </Reference>
+    <Reference Include="OpenPop">
+      <HintPath>..\..\..\..\..\..\..\Data\OpenPop.dll</HintPath>
+    </Reference>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\delete.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.0,Profile=Client">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4 Client Profile %28x86 and x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Windows.Installer.3.1">
+      <Visible>False</Visible>
+      <ProductName>Windows Installer 3.1</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmCorreo.resx">
+      <DependentUpon>frmCorreo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmCuentas.resx">
+      <DependentUpon>frmCuentas.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmNuevoCorreo.resx">
+      <DependentUpon>frmNuevoCorreo.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmPrincipal.resx">
+      <DependentUpon>frmPrincipal.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="UI\frmServidores.resx">
+      <DependentUpon>frmServidores.cs</DependentUpon>
+    </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\add.ico" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="Resources\pencil.ico" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
