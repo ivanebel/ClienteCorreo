@@ -42,7 +42,7 @@ namespace ClienteCorreo.UI
             catch (Exception ex) { }
         }
 
-        [STAThread]
+
         private void CargarCorreo() {
             String deStr = "";
             foreach (OrigenDestinoDTO origen in correo.OrigenDestino) {
@@ -60,10 +60,29 @@ namespace ClienteCorreo.UI
             }
 
             txtDe.Text = deStr;
+            lblDe.Text = deStr;
             txtCc.Text = ccStr;
+            lblCc.Text = ccStr;
             txtCco.Text = ccoStr;
+            lblCco.Text = ccoStr;
             txtAsunto.Text = correo.Asunto;
+            lblAsunto.Text = correo.Asunto;
             txtCorreo.Text = correo.Detalle;
+
+            if (ccStr == "" && ccoStr == "") {
+                int lTop = lblsCC.Top;
+                int tTop = lblCc.Top;
+                int iDif = lblsAsunto.Top - lblsCC.Top;
+                lblsAsunto.Top = lTop;
+                lblAsunto.Top = tTop;
+                lblsCC.Visible = false;
+                lblsCco.Visible = false;
+                lblCc.Visible = false;
+                lblCco.Visible = false;
+                groupCorreo.Height = groupCorreo.Height - iDif;
+                wbCorreo.Top = wbCorreo.Top - iDif;
+                wbCorreo.Height = wbCorreo.Height + iDif;
+            }
             
             wbCorreo.DocumentText = correo.Detalle;
 

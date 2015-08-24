@@ -12,3 +12,15 @@ C:\Users\Ivan Ebel\Documents\Visual Studio 2010\Projects\ClienteCorreo\ClienteCo
 C:\Users\Ivan Ebel\Documents\Visual Studio 2010\Projects\ClienteCorreo\ClienteCorreo\obj\x86\Debug\ClienteCorreo.UI.frmCorreo.resources
 C:\Users\Ivan Ebel\Documents\Visual Studio 2010\Projects\ClienteCorreo\ClienteCorreo\obj\x86\Debug\ClienteCorreo.UI.frmServidores.resources
 C:\Users\Ivan Ebel\Documents\Visual Studio 2010\Projects\ClienteCorreo\ClienteCorreo\obj\x86\Debug\ClienteCorreo.UI.frmCuentas.resources
+C:\Users\Ivan\Documents\GitHub\ClienteCorreo\ClienteCorreo\obj\x86\Debug\ClienteCorreo.exe
+C:\Users\Ivan\Documents\GitHub\ClienteCorreo\ClienteCorreo\obj\x86\Debug\ClienteCorreo.pdb
+C:\Users\Ivan\Documents\GitHub\ClienteCorreo\ClienteCorreo\bin\Debug\ClienteCorreo.exe
+C:\Users\Ivan\Documents\GitHub\ClienteCorreo\ClienteCorreo\bin\Debug\ClienteCorreo.pdb
+C:\Users\Ivan\Documents\GitHub\ClienteCorreo\ClienteCorreo\obj\x86\Debug\ClienteCorreo.csprojResolveAssemblyReference.cache
+C:\Users\Ivan\Documents\GitHub\ClienteCorreo\ClienteCorreo\obj\x86\Debug\ClienteCorreo.Properties.Resources.resources
+C:\Users\Ivan\Documents\GitHub\ClienteCorreo\ClienteCorreo\obj\x86\Debug\ClienteCorreo.UI.frmCorreo.resources
+C:\Users\Ivan\Documents\GitHub\ClienteCorreo\ClienteCorreo\obj\x86\Debug\ClienteCorreo.UI.frmCuentas.resources
+C:\Users\Ivan\Documents\GitHub\ClienteCorreo\ClienteCorreo\obj\x86\Debug\ClienteCorreo.UI.frmNuevoCorreo.resources
+C:\Users\Ivan\Documents\GitHub\ClienteCorreo\ClienteCorreo\obj\x86\Debug\ClienteCorreo.UI.frmPrincipal.resources
+C:\Users\Ivan\Documents\GitHub\ClienteCorreo\ClienteCorreo\obj\x86\Debug\ClienteCorreo.UI.frmServidores.resources
+C:\Users\Ivan\Documents\GitHub\ClienteCorreo\ClienteCorreo\obj\x86\Debug\ClienteCorreo.csproj.GenerateResource.Cache

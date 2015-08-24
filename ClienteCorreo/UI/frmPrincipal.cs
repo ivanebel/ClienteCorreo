@@ -9,6 +9,7 @@ using System.Windows.Forms;
 
 using ClienteCorreo.Controller;
 using ClienteCorreo.DTO;
+using ClienteCorreo.Utils;
 
 namespace ClienteCorreo.UI
 {
@@ -17,6 +18,7 @@ namespace ClienteCorreo.UI
         private Dictionary<int,String> nombreCuentas;
         private int cantidadNoLeidos = 0;
         private string selectednode = "inbox";
+        private int correoseleccionado = 0;
 
         public int maxcorreos = 0;
 
@@ -25,6 +27,7 @@ namespace ClienteCorreo.UI
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new frmPrincipal());
+
         }
 
         public frmPrincipal()
@@ -35,7 +38,7 @@ namespace ClienteCorreo.UI
         private void frmPrincipal_Load(object sender, EventArgs e)
         {
             treeMenu.ExpandAll();
-
+            
             ActualizarDatos(selectednode);
             //Recibo mails
             //Recibir();
@@ -46,6 +49,10 @@ namespace ClienteCorreo.UI
             ActualizarDatos(selectednode);
         }
 
+        /// <summary>
+        /// Recibe los correos electrónicos a través de POP.
+        /// Los añade a la base de datos
+        /// </summary>
         private void Recibir()
         {
             try
@@ -60,19 +67,52 @@ namespace ClienteCorreo.UI
                 {
                     nombreCuentas.Add(cuentaObtenida.IdCuenta, cuentaObtenida.User);
 
-                    maxcorreos = Controller.Correo.getInstance().UltimoIdCorreo(cuentaObtenida);
+                    //maxcorreos = Controller.Correo.getInstance().UltimoIdCorreo(cuentaObtenida);
 
-                    //Controller.Correo.getInstance().limpiar(cuentaObtenida);
+                    //Cuento cuántos mails hay con esa cuenta en la DB
+                    int cantidadMailsDb = Controller.Correo.getInstance().CantidadCorreos(cuentaObtenida);
 
-                    int cantidadcorreos = Controller.Cuenta.getInstance().CantidadCorreos(cuentaObtenida);
-
-                    if (cantidadcorreos == 0)
-                    {
+                    //Cuento cuántos mails hay con esa cuenta en el server pop.
+                    ServerDTO servidor = new ServerDTO();
+                    servidor.Id = cuentaObtenida.Server;
+                    servidor = Controller.Server.getInstance().ObtenerServer(servidor);
+                    AdminPop adminpop = new AdminPop();
+                    adminpop.ConectarPop(servidor, cuentaObtenida);
+                    int cantidadMailsPop = adminpop.ObtenerCantidadMensajes();
+                    
+                    //Si DB < POP
+                    if (cantidadMailsDb < cantidadMailsPop && cantidadMailsDb != 0) {
+                        List<CorreoDTO> listaCorreosDb = Controller.Correo.getInstance().listar(false, false, cuentaObtenida);
+                        foreach (CorreoDTO correo in listaCorreosDb) {
+                            Controller.Correo.getInstance().eliminarCorreo(correo);
+                        }
+                        //Por cada correo obtenido:
+                            //Borrar su OrigenDestino
+                            //Borrar su Adjunto
+                            //Borrar el correo
+                        //Obtengo lista de mails de POP
                         List<CorreoDTO> listaCorreos = Correo.MailServer.getInstance().leerCorreo(cuentaObtenida);
                         foreach (CorreoDTO correo in listaCorreos)
+                        {
+                            //Agrego mail
+                            //Agrego OrigenDestino
+                            //Agrego Adjunto
                             Controller.Correo.getInstance().agregarCorreo(correo);
-                    }
+                        }
 
+                    }
+                    //Si no hay correos en DB, cargar los de POP y agregarlos en DB.
+                    else if (cantidadMailsDb == 0) {
+                        List<CorreoDTO> listaCorreos = Correo.MailServer.getInstance().leerCorreo(cuentaObtenida);
+                        foreach (CorreoDTO correo in listaCorreos)
+                        {
+                            //Agrego mail
+                            //Agrego OrigenDestino
+                            //Agrego Adjunto
+                            Controller.Correo.getInstance().agregarCorreo(correo);
+                        }
+                    }
+                    
                 }
 
             }
@@ -129,7 +169,7 @@ namespace ClienteCorreo.UI
                 cuenta = Controller.Cuenta.getInstance().ObtenerCuenta(cuenta);
 
                 if (adjuntos.Count > 0)
-                    tabla.Rows.Add(correoObtenido.IdCorreo.ToString(), remitente, correoObtenido.Asunto.ToString(), fechaStr, correoObtenido.Read, cuenta.User, imageList1.Images[4]);
+                    tabla.Rows.Add(correoObtenido.IdCorreo.ToString(), remitente, correoObtenido.Asunto.ToString(), fechaStr, correoObtenido.Read, cuenta.User, "A");
                 else
                     tabla.Rows.Add(correoObtenido.IdCorreo.ToString(), remitente, correoObtenido.Asunto.ToString(), fechaStr, correoObtenido.Read, cuenta.User);
                 
@@ -150,8 +190,8 @@ namespace ClienteCorreo.UI
 
             foreach (DataGridViewRow fila in dgvMensajes.Rows) {
                 if (fila.Cells["Leido"].Value.ToString() == "False") {
-                    dgvMensajes.Rows[fila.Index].DefaultCellStyle.BackColor = Color.LightSkyBlue;
-                    dgvMensajes.Rows[fila.Index].DefaultCellStyle.Font = new Font(dgvMensajes.Font, FontStyle.Bold);
+                    dgvMensajes.Rows[fila.Index].DefaultCellStyle.BackColor = Color.FromArgb(204, 227, 245);
+                    dgvMensajes.Rows[fila.Index].DefaultCellStyle.Font = new Font(dgvMensajes.DefaultCellStyle.Font, FontStyle.Bold);
                     cantidadNoLeidos++;
                 }
             }
@@ -212,7 +252,7 @@ namespace ClienteCorreo.UI
         }
 
         private void NuevoCorreo() {
-            frmNuevoCorreo nuevocorreo = new frmNuevoCorreo(this);
+            frmNuevoCorreo nuevocorreo = new frmNuevoCorreo(this,"new");
             nuevocorreo.Show();
 
         }
@@ -226,15 +266,43 @@ namespace ClienteCorreo.UI
             modelo.Columns.Add("Asunto");
             modelo.Columns.Add("Fecha");
             modelo.Columns.Add("Leido");
-            DataGridViewImageColumn tipocolumna = new DataGridViewImageColumn();
+            //DataGridViewImageColumn tipocolumna = new DataGridViewImageColumn();
             modelo.Columns.Add("Cuenta");
             modelo.Columns.Add("Adjunto");
+
+            //DataGridViewImageColumn imgCol = new DataGridViewImageColumn();
+            //Image image = imageList1.Images[4];
+            //imgCol.Image = image;
+
+            //modelo.Columns.Add(imgCol);
+            //img.HeaderText = "Image";
+            //img.Name = "img";
+
 
             return modelo;
 
         }
 
-        [STAThread]
+        private void dgvMensajes_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (dgvMensajes.Rows.Count == 0)
+                return;
+
+            tbResponder.Enabled = true;
+            tbReenviar.Enabled = true;
+            tbEliminar.Enabled = true;
+
+            DataGridViewRow filaseleccionada = dgvMensajes.SelectedRows[0];
+            correoseleccionado = int.Parse(filaseleccionada.Cells["Id"].Value.ToString());
+
+            //CorreoDTO correo = new CorreoDTO();
+            //correo.IdCorreo = idmensaje;
+            //correo = Controller.Correo.getInstance().obtenerCorreo(correo);
+
+
+
+        }
+
         private void dgvMensajes_CellDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
             if (dgvMensajes.Rows.Count == 0)
@@ -307,6 +375,8 @@ namespace ClienteCorreo.UI
 
         private void tbSincronizar_Click(object sender, EventArgs e)
         {
+            toolStrip1.Enabled = false;
+            
             tbStatus.Text = "Sincronizando..";
             UseWaitCursor = true;
 
@@ -332,6 +402,8 @@ namespace ClienteCorreo.UI
             ActualizarDatos(selectednode);
             UseWaitCursor = false;
             tbStatus.Text = "Sincronización Completa";
+
+            toolStrip1.Enabled = true;
             
         }
 
@@ -340,6 +412,42 @@ namespace ClienteCorreo.UI
             selectednode = treeMenu.SelectedNode.Tag.ToString();
             ActualizarDatos(selectednode);
         }
+
+        private void tbResponder_Click(object sender, EventArgs e)
+        {
+            if (correoseleccionado == 0)
+                return;
+
+            CorreoDTO correo = new CorreoDTO();
+            correo.IdCorreo = correoseleccionado;
+            correo = Controller.Correo.getInstance().obtenerCorreo(correo);
+
+            List<OrigenDestinoDTO> origenes = correo.OrigenDestino;
+
+            frmNuevoCorreo nuevocorreo = new frmNuevoCorreo(this, "reply");
+            nuevocorreo.PrepararParaResponder(correo);
+            
+            nuevocorreo.Show();
+
+
+        }
+
+        private void tbReenviar_Click(object sender, EventArgs e)
+        {
+            if (correoseleccionado == 0)
+                return;
+
+            CorreoDTO correo = new CorreoDTO();
+            correo.IdCorreo = correoseleccionado;
+            correo = Controller.Correo.getInstance().obtenerCorreo(correo);
+
+            frmNuevoCorreo nuevocorreo = new frmNuevoCorreo(this, "forward");
+            nuevocorreo.PrepararParaReenviar(correo);
+
+            nuevocorreo.Show();
+        }
+
+        
 
     }
 }

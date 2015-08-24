@@ -37,21 +37,26 @@
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.tbMarcarLeido = new System.Windows.Forms.ToolStripButton();
             this.tbEliminar = new System.Windows.Forms.ToolStripButton();
-            this.groupBox1 = new System.Windows.Forms.GroupBox();
+            this.groupCorreo = new System.Windows.Forms.GroupBox();
             this.txtAsunto = new System.Windows.Forms.TextBox();
             this.txtCco = new System.Windows.Forms.TextBox();
             this.txtCc = new System.Windows.Forms.TextBox();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
+            this.lblsAsunto = new System.Windows.Forms.Label();
+            this.lblsCco = new System.Windows.Forms.Label();
+            this.lblsCC = new System.Windows.Forms.Label();
             this.txtDe = new System.Windows.Forms.TextBox();
             this.label1 = new System.Windows.Forms.Label();
             this.txtCorreo = new System.Windows.Forms.RichTextBox();
             this.wbCorreo = new System.Windows.Forms.WebBrowser();
             this.statusStrip1 = new System.Windows.Forms.StatusStrip();
             this.tsLink = new System.Windows.Forms.ToolStripStatusLabel();
+            this.lblDe = new System.Windows.Forms.Label();
+            this.lblCc = new System.Windows.Forms.Label();
+            this.lblCco = new System.Windows.Forms.Label();
+            this.lblAsunto = new System.Windows.Forms.Label();
+            this.toolStripStatusLabel1 = new System.Windows.Forms.ToolStripStatusLabel();
             this.toolStrip1.SuspendLayout();
-            this.groupBox1.SuspendLayout();
+            this.groupCorreo.SuspendLayout();
             this.statusStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -73,18 +78,20 @@
             // 
             // tbResponder
             // 
+            this.tbResponder.Font = new System.Drawing.Font("Droid Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbResponder.Image = ((System.Drawing.Image)(resources.GetObject("tbResponder.Image")));
             this.tbResponder.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tbResponder.Name = "tbResponder";
-            this.tbResponder.Size = new System.Drawing.Size(83, 32);
+            this.tbResponder.Size = new System.Drawing.Size(92, 32);
             this.tbResponder.Text = "Responder";
             // 
             // tbReenviar
             // 
+            this.tbReenviar.Font = new System.Drawing.Font("Droid Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbReenviar.Image = ((System.Drawing.Image)(resources.GetObject("tbReenviar.Image")));
             this.tbReenviar.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tbReenviar.Name = "tbReenviar";
-            this.tbReenviar.Size = new System.Drawing.Size(72, 32);
+            this.tbReenviar.Size = new System.Drawing.Size(78, 32);
             this.tbReenviar.Text = "Reenviar";
             // 
             // toolStripSeparator1
@@ -94,109 +101,118 @@
             // 
             // tbMarcarLeido
             // 
+            this.tbMarcarLeido.Font = new System.Drawing.Font("Droid Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbMarcarLeido.Image = ((System.Drawing.Image)(resources.GetObject("tbMarcarLeido.Image")));
             this.tbMarcarLeido.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tbMarcarLeido.Name = "tbMarcarLeido";
-            this.tbMarcarLeido.Size = new System.Drawing.Size(127, 32);
+            this.tbMarcarLeido.Size = new System.Drawing.Size(136, 32);
             this.tbMarcarLeido.Text = "Marcar como leído";
             // 
             // tbEliminar
             // 
+            this.tbEliminar.Font = new System.Drawing.Font("Droid Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.tbEliminar.Image = ((System.Drawing.Image)(resources.GetObject("tbEliminar.Image")));
             this.tbEliminar.ImageTransparentColor = System.Drawing.Color.Magenta;
             this.tbEliminar.Name = "tbEliminar";
-            this.tbEliminar.Size = new System.Drawing.Size(70, 32);
+            this.tbEliminar.Size = new System.Drawing.Size(74, 32);
             this.tbEliminar.Text = "Eliminar";
             // 
-            // groupBox1
+            // groupCorreo
             // 
-            this.groupBox1.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
-            this.groupBox1.Controls.Add(this.txtAsunto);
-            this.groupBox1.Controls.Add(this.txtCco);
-            this.groupBox1.Controls.Add(this.txtCc);
-            this.groupBox1.Controls.Add(this.label4);
-            this.groupBox1.Controls.Add(this.label3);
-            this.groupBox1.Controls.Add(this.label2);
-            this.groupBox1.Controls.Add(this.txtDe);
-            this.groupBox1.Controls.Add(this.label1);
-            this.groupBox1.Location = new System.Drawing.Point(12, 38);
-            this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(669, 129);
-            this.groupBox1.TabIndex = 1;
-            this.groupBox1.TabStop = false;
-            this.groupBox1.Text = "Correo";
+            this.groupCorreo.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
+            this.groupCorreo.Controls.Add(this.lblAsunto);
+            this.groupCorreo.Controls.Add(this.lblCco);
+            this.groupCorreo.Controls.Add(this.lblCc);
+            this.groupCorreo.Controls.Add(this.lblDe);
+            this.groupCorreo.Controls.Add(this.txtAsunto);
+            this.groupCorreo.Controls.Add(this.txtCco);
+            this.groupCorreo.Controls.Add(this.txtCc);
+            this.groupCorreo.Controls.Add(this.lblsAsunto);
+            this.groupCorreo.Controls.Add(this.lblsCco);
+            this.groupCorreo.Controls.Add(this.lblsCC);
+            this.groupCorreo.Controls.Add(this.txtDe);
+            this.groupCorreo.Controls.Add(this.label1);
+            this.groupCorreo.Location = new System.Drawing.Point(12, 38);
+            this.groupCorreo.Name = "groupCorreo";
+            this.groupCorreo.Size = new System.Drawing.Size(669, 129);
+            this.groupCorreo.TabIndex = 1;
+            this.groupCorreo.TabStop = false;
             // 
             // txtAsunto
             // 
-            this.txtAsunto.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtAsunto.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtAsunto.BackColor = System.Drawing.Color.White;
             this.txtAsunto.Location = new System.Drawing.Point(68, 95);
             this.txtAsunto.Name = "txtAsunto";
             this.txtAsunto.ReadOnly = true;
             this.txtAsunto.Size = new System.Drawing.Size(570, 20);
             this.txtAsunto.TabIndex = 7;
+            this.txtAsunto.Visible = false;
             // 
             // txtCco
             // 
-            this.txtCco.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtCco.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtCco.BackColor = System.Drawing.Color.White;
             this.txtCco.Location = new System.Drawing.Point(68, 69);
             this.txtCco.Name = "txtCco";
             this.txtCco.ReadOnly = true;
             this.txtCco.Size = new System.Drawing.Size(570, 20);
             this.txtCco.TabIndex = 6;
+            this.txtCco.Visible = false;
             // 
             // txtCc
             // 
-            this.txtCc.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtCc.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtCc.BackColor = System.Drawing.Color.White;
             this.txtCc.Location = new System.Drawing.Point(68, 43);
             this.txtCc.Name = "txtCc";
             this.txtCc.ReadOnly = true;
             this.txtCc.Size = new System.Drawing.Size(570, 20);
             this.txtCc.TabIndex = 5;
+            this.txtCc.Visible = false;
             // 
-            // label4
+            // lblsAsunto
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(20, 98);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(43, 13);
-            this.label4.TabIndex = 4;
-            this.label4.Text = "Asunto:";
+            this.lblsAsunto.AutoSize = true;
+            this.lblsAsunto.Location = new System.Drawing.Point(20, 98);
+            this.lblsAsunto.Name = "lblsAsunto";
+            this.lblsAsunto.Size = new System.Drawing.Size(44, 13);
+            this.lblsAsunto.TabIndex = 4;
+            this.lblsAsunto.Text = "Asunto:";
             // 
-            // label3
+            // lblsCco
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(20, 72);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(32, 13);
-            this.label3.TabIndex = 3;
-            this.label3.Text = "CCO:";
+            this.lblsCco.AutoSize = true;
+            this.lblsCco.Location = new System.Drawing.Point(20, 72);
+            this.lblsCco.Name = "lblsCco";
+            this.lblsCco.Size = new System.Drawing.Size(33, 13);
+            this.lblsCco.TabIndex = 3;
+            this.lblsCco.Text = "CCO:";
             // 
-            // label2
+            // lblsCC
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(20, 46);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(24, 13);
-            this.label2.TabIndex = 2;
-            this.label2.Text = "CC:";
+            this.lblsCC.AutoSize = true;
+            this.lblsCC.Location = new System.Drawing.Point(20, 46);
+            this.lblsCC.Name = "lblsCC";
+            this.lblsCC.Size = new System.Drawing.Size(24, 13);
+            this.lblsCC.TabIndex = 2;
+            this.lblsCC.Text = "CC:";
             // 
             // txtDe
             // 
-            this.txtDe.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtDe.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtDe.BackColor = System.Drawing.Color.White;
             this.txtDe.Location = new System.Drawing.Point(68, 17);
             this.txtDe.Name = "txtDe";
             this.txtDe.ReadOnly = true;
             this.txtDe.Size = new System.Drawing.Size(570, 20);
             this.txtDe.TabIndex = 1;
+            this.txtDe.Visible = false;
             // 
             // label1
             // 
@@ -209,9 +225,9 @@
             // 
             // txtCorreo
             // 
-            this.txtCorreo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.txtCorreo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.txtCorreo.BackColor = System.Drawing.Color.White;
             this.txtCorreo.Location = new System.Drawing.Point(12, 173);
             this.txtCorreo.Name = "txtCorreo";
@@ -223,9 +239,9 @@
             // 
             // wbCorreo
             // 
-            this.wbCorreo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
-                        | System.Windows.Forms.AnchorStyles.Left)
-                        | System.Windows.Forms.AnchorStyles.Right)));
+            this.wbCorreo.Anchor = ((System.Windows.Forms.AnchorStyles)((((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom) 
+            | System.Windows.Forms.AnchorStyles.Left) 
+            | System.Windows.Forms.AnchorStyles.Right)));
             this.wbCorreo.Location = new System.Drawing.Point(12, 173);
             this.wbCorreo.MinimumSize = new System.Drawing.Size(20, 20);
             this.wbCorreo.Name = "wbCorreo";
@@ -238,7 +254,8 @@
             // statusStrip1
             // 
             this.statusStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.tsLink});
+            this.tsLink,
+            this.toolStripStatusLabel1});
             this.statusStrip1.Location = new System.Drawing.Point(0, 677);
             this.statusStrip1.Name = "statusStrip1";
             this.statusStrip1.Size = new System.Drawing.Size(694, 22);
@@ -250,6 +267,53 @@
             this.tsLink.Name = "tsLink";
             this.tsLink.Size = new System.Drawing.Size(0, 17);
             // 
+            // lblDe
+            // 
+            this.lblDe.AutoSize = true;
+            this.lblDe.Font = new System.Drawing.Font("Droid Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblDe.Location = new System.Drawing.Point(65, 19);
+            this.lblDe.Name = "lblDe";
+            this.lblDe.Size = new System.Drawing.Size(66, 15);
+            this.lblDe.TabIndex = 5;
+            this.lblDe.Text = "Remitente";
+            // 
+            // lblCc
+            // 
+            this.lblCc.AutoSize = true;
+            this.lblCc.Font = new System.Drawing.Font("Droid Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCc.Location = new System.Drawing.Point(65, 45);
+            this.lblCc.Name = "lblCc";
+            this.lblCc.Size = new System.Drawing.Size(23, 15);
+            this.lblCc.TabIndex = 8;
+            this.lblCc.Text = "CC";
+            // 
+            // lblCco
+            // 
+            this.lblCco.AutoSize = true;
+            this.lblCco.Font = new System.Drawing.Font("Droid Sans", 9.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblCco.Location = new System.Drawing.Point(65, 71);
+            this.lblCco.Name = "lblCco";
+            this.lblCco.Size = new System.Drawing.Size(33, 15);
+            this.lblCco.TabIndex = 9;
+            this.lblCco.Text = "CCO";
+            // 
+            // lblAsunto
+            // 
+            this.lblAsunto.AutoSize = true;
+            this.lblAsunto.Font = new System.Drawing.Font("Droid Sans", 9.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.lblAsunto.Location = new System.Drawing.Point(65, 97);
+            this.lblAsunto.Name = "lblAsunto";
+            this.lblAsunto.Size = new System.Drawing.Size(51, 15);
+            this.lblAsunto.TabIndex = 10;
+            this.lblAsunto.Text = "Asunto";
+            // 
+            // toolStripStatusLabel1
+            // 
+            this.toolStripStatusLabel1.Font = new System.Drawing.Font("Droid Sans", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.toolStripStatusLabel1.Name = "toolStripStatusLabel1";
+            this.toolStripStatusLabel1.Size = new System.Drawing.Size(125, 17);
+            this.toolStripStatusLabel1.Text = "toolStripStatusLabel1";
+            // 
             // frmCorreo
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -258,8 +322,9 @@
             this.Controls.Add(this.statusStrip1);
             this.Controls.Add(this.wbCorreo);
             this.Controls.Add(this.txtCorreo);
-            this.Controls.Add(this.groupBox1);
+            this.Controls.Add(this.groupCorreo);
             this.Controls.Add(this.toolStrip1);
+            this.Font = new System.Drawing.Font("Droid Sans", 8.25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "frmCorreo";
             this.Text = "Correo";
@@ -267,8 +332,8 @@
             this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.frmCorreo_MouseMove);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
-            this.groupBox1.ResumeLayout(false);
-            this.groupBox1.PerformLayout();
+            this.groupCorreo.ResumeLayout(false);
+            this.groupCorreo.PerformLayout();
             this.statusStrip1.ResumeLayout(false);
             this.statusStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -279,7 +344,7 @@
         #endregion
 
         private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.GroupBox groupBox1;
+        private System.Windows.Forms.GroupBox groupCorreo;
         private System.Windows.Forms.RichTextBox txtCorreo;
         private System.Windows.Forms.ToolStripButton tbResponder;
         private System.Windows.Forms.ToolStripButton tbReenviar;
@@ -289,13 +354,18 @@
         private System.Windows.Forms.TextBox txtAsunto;
         private System.Windows.Forms.TextBox txtCco;
         private System.Windows.Forms.TextBox txtCc;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label2;
+        private System.Windows.Forms.Label lblsAsunto;
+        private System.Windows.Forms.Label lblsCco;
+        private System.Windows.Forms.Label lblsCC;
         private System.Windows.Forms.TextBox txtDe;
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.WebBrowser wbCorreo;
         private System.Windows.Forms.StatusStrip statusStrip1;
         private System.Windows.Forms.ToolStripStatusLabel tsLink;
+        private System.Windows.Forms.Label lblDe;
+        private System.Windows.Forms.Label lblAsunto;
+        private System.Windows.Forms.Label lblCco;
+        private System.Windows.Forms.Label lblCc;
+        private System.Windows.Forms.ToolStripStatusLabel toolStripStatusLabel1;
     }
 }

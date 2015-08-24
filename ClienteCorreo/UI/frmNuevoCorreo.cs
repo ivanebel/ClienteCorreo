@@ -20,14 +20,17 @@ namespace ClienteCorreo.UI
         CorreoDTO correo = new CorreoDTO();
         Dictionary<String, int> dictionaryCuentas = new Dictionary<String, int>();
 
+        public string tipo = "new";
+
 
         public frmNuevoCorreo()
         {
             InitializeComponent();
         }
 
-        public frmNuevoCorreo(frmPrincipal padre) {
+        public frmNuevoCorreo(frmPrincipal padre, string origen) {
             InitializeComponent();
+            tipo = origen;
             ventanaprincipal = padre;
 
         }
@@ -78,6 +81,7 @@ namespace ClienteCorreo.UI
                 }
             }
 
+
             try
             {
                 MailServer.getInstance().enviarCorreo(correo);
@@ -123,5 +127,48 @@ namespace ClienteCorreo.UI
             correo.IdCuenta = dictionaryCuentas[cuentaStr];
         }
 
+        public void PrepararParaResponder(CorreoDTO oCorreo) {
+            if (tipo == "reply") {
+
+                CorreoDTO mail = new CorreoDTO();
+                mail.IdCorreo = oCorreo.IdCorreo;
+                mail = Controller.Correo.getInstance().obtenerCorreo(mail);
+
+                List<OrigenDestinoDTO> origenes = new List<OrigenDestinoDTO>();
+                origenes = mail.OrigenDestino;
+
+                String deStr = "";
+                foreach (OrigenDestinoDTO origen in origenes)
+                {
+                    if (origen.Cc == false && origen.Cco == false)
+                        deStr = origen.Direccion;
+                }
+
+                String ccStr = "";
+                String ccoStr = "";
+                foreach (OrigenDestinoDTO origen in origenes)
+                {
+                    if (origen.Cc == true)
+                        ccStr = ccStr + origen.Direccion + "; ";
+                    else if (origen.Cco == true)
+                        ccoStr = ccoStr + origen.Direccion + "; ";
+                }
+
+                txtPara.Text = deStr;
+                txtCC.Text = ccStr;
+                txtCCO.Text = ccoStr;
+
+                txtAsunto.Text = "RE: " + mail.Asunto;
+
+            }
+        }
+
+        public void PrepararParaReenviar(CorreoDTO oCorreo) {
+            if (tipo == "forward")
+            {
+                txtAsunto.Text = "FWD: " + oCorreo.Asunto;
+                txtMensaje.Text = oCorreo.Detalle;
+            }
+        }
     }
 }

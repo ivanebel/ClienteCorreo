@@ -17,7 +17,7 @@ namespace ClienteCorreo.Persistence
 
         int markAsRead(CorreoDTO correo);
 
-        List<CorreoDTO> list(bool read, bool sent, int cant);
+        List<CorreoDTO> list(bool read, bool sent, int cant, CuentaDTO cuenta = null);
 
         int delete(CorreoDTO correo);
 
@@ -26,6 +26,9 @@ namespace ClienteCorreo.Persistence
         int clear(CuentaDTO cuenta);
 
         int LastId(CuentaDTO cuenta);
+
+        int mailCount(CuentaDTO cuenta);
+
 
     }
 }

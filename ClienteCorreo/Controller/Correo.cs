@@ -87,12 +87,22 @@ namespace ClienteCorreo.Controller
         /// <param name="leidos">Muestra mensajes leídos</param>
         /// <param name="enviados">Muestra mensajes enviados</param>
         /// <returns>Lista de CorreoDTO</returns>
-        public List<CorreoDTO> listar(bool leidos, bool enviados) {
+        public List<CorreoDTO> listar(bool leidos, bool enviados, CuentaDTO cuenta=null) {
             factory.startConnection();
             
             int cant = factory.getConfiguracion().getConfiguracion().CantidadCorreos;
-            List<CorreoDTO> lista = factory.getCorreo().list(leidos, enviados, cant);
-            
+
+            List<CorreoDTO> lista = new List<CorreoDTO>();
+
+            if (cuenta != null)
+            {
+                lista = factory.getCorreo().list(leidos, enviados, cant, cuenta);
+            }
+            else
+            {
+                lista = factory.getCorreo().list(leidos, enviados, cant);
+            }
+                
             factory.closeConnection();
 
             return lista;
@@ -127,6 +137,13 @@ namespace ClienteCorreo.Controller
             return id;
         }
 
+        public int CantidadCorreos(CuentaDTO cuenta) {
+            factory.startConnection();
+            int cantidad = factory.getCorreo().mailCount(cuenta);
+            factory.closeConnection();
+
+            return cantidad;
+        }
 
     
     

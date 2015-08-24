@@ -164,6 +164,7 @@ namespace ClienteCorreo.Correo
 
                     correo.Adjuntos = adjuntos;
 
+                    //MIRAR ACA
                     string fechaStr = mensajeObtenido.Subject.Substring(mensajeObtenido.Subject.Length - 10, 10);
 
                     correo.Fecha = DateTime.Parse(fechaStr);

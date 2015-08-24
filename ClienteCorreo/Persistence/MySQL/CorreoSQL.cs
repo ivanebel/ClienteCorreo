@@ -156,7 +156,9 @@ namespace ClienteCorreo.Persistence.MySQL
                         correoObtenido.Detalle= myData.Rows[i].ItemArray.GetValue(2).ToString();
                         //correoObtenido.TipoCorreo = myData.Rows[i].ItemArray.GetValue(3).ToString();
                         correoObtenido.TipoCorreo = Tipo.RECIBIDO;
-                        correoObtenido.Fecha= DateTime.Parse(myData.Rows[i].ItemArray.GetValue(4).ToString());
+                        string fechaStr = myData.Rows[i].ItemArray.GetValue(4).ToString();
+                        fechaStr = fechaStr.Substring(0, 10);
+                        correoObtenido.Fecha= DateTime.Parse(fechaStr);
                         correoObtenido.Read = bool.Parse(myData.Rows[i].ItemArray.GetValue(5).ToString());
                         correoObtenido.NumeroServidorCorreo= int.Parse(myData.Rows[i].ItemArray.GetValue(6).ToString());
 
@@ -265,7 +267,7 @@ namespace ClienteCorreo.Persistence.MySQL
         /// <param name="sent"></param>
         /// <param name="cant"></param>
         /// <returns></returns>
-        public List<CorreoDTO> list(bool read, bool sent, int cant)
+        public List<CorreoDTO> list(bool read, bool sent, int cant, CuentaDTO cuenta = null)
         {
             CorreoDTO correo;
             List<CorreoDTO> correos = new List<CorreoDTO>();
@@ -281,16 +283,19 @@ namespace ClienteCorreo.Persistence.MySQL
                 string query = "SELECT idcorreo,asunto,detalle,tipocorreo,fecha,leido,cuenta_idcuenta FROM correo WHERE 1=1";
 
                 //Agrego texto a la query si así lo indica cada filtro
+                if (cuenta != null)
+                    query += " AND cuenta_idcuenta=?idcuenta";
                 if (read) query += " AND leido=?leido";
                 if (sent)
                     query += " AND tipocorreo='ENVIADO'";
                 else
                     query += " AND tipocorreo='RECIBIDO'";
-                query += " ORDER BY fecha DESC";
+                query += " ORDER BY idcorreo DESC";
                 if (cant != 0) query += " LIMIT ?cant";
 
                 myCommand.CommandText = query;
 
+                if(cuenta != null)  {myCommand.Parameters.Add("?idcuenta",MySqlDbType.Int16).Value = cuenta.IdCuenta;}
                 myCommand.Parameters.Add("?leido", MySqlDbType.Int16).Value = read;
                 myCommand.Parameters.Add("?cant", MySqlDbType.Int16).Value = cant;
 
@@ -308,10 +313,10 @@ namespace ClienteCorreo.Persistence.MySQL
                         correo.Detalle = myData.Rows[i].ItemArray.GetValue(2).ToString();
                         correo.TipoCorreo = Tipo.ENVIADO;                                           //!!!!!!!!
 
-                        //String fechaStr = myData.Rows[i].ItemArray.GetValue(4).ToString();
-                        //correo.Fecha = DateTime.Parse(fechaStr, "yyyy-MM-dd");
+                        String fechaStr = myData.Rows[i].ItemArray.GetValue(4).ToString();
+                        fechaStr = fechaStr.Substring(0, 10);
 
-                        correo.Fecha = DateTime.Parse(myData.Rows[i].ItemArray.GetValue(4).ToString());
+                        correo.Fecha = DateTime.Parse(fechaStr);
                         
                         correo.Read = bool.Parse(myData.Rows[i].ItemArray.GetValue(5).ToString());
                         correo.IdCuenta = int.Parse(myData.Rows[i].ItemArray.GetValue(6).ToString());
@@ -402,11 +407,6 @@ namespace ClienteCorreo.Persistence.MySQL
                 MySqlCommand myCommand = new MySqlCommand();
                 myCommand.Connection = connection;
 
-                myCommand.CommandText = "DELETE FROM correo WHERE idcorreo=?idcorreo";
-                myCommand.Parameters.Add("?idcorreo", MySqlDbType.Int16).Value = correo.IdCorreo;
-
-                myCommand.ExecuteNonQuery();
-
                 myCommand.CommandText = "DELETE FROM adjunto WHERE correo_idcorreo=?idcorreoo";
                 myCommand.Parameters.Add("?idcorreoo", MySqlDbType.Int16).Value = correo.IdCorreo;
 
@@ -417,6 +417,10 @@ namespace ClienteCorreo.Persistence.MySQL
 
                 myCommand.ExecuteNonQuery();
 
+                myCommand.CommandText = "DELETE FROM correo WHERE idcorreo=?idcorreo";
+                myCommand.Parameters.Add("?idcorreo", MySqlDbType.Int16).Value = correo.IdCorreo;
+
+                myCommand.ExecuteNonQuery();
 
                 connection.Close();
 
@@ -517,6 +521,33 @@ namespace ClienteCorreo.Persistence.MySQL
             }
             catch (MySqlException ex) {
                 return 0;
+            }
+        }
+
+
+        public int mailCount(CuentaDTO cuenta)
+        {
+            int res = 0;
+            try 
+            {
+                connection.Open();
+
+                MySqlCommand myCommand = new MySqlCommand();
+                myCommand.Connection = connection;
+
+                myCommand.CommandText = "SELECT COUNT(*) FROM correo WHERE cuenta_idcuenta=?idcuenta";
+                myCommand.Parameters.Add("?idcuenta", MySqlDbType.Int16).Value = cuenta.IdCuenta;
+
+                string resStr = myCommand.ExecuteScalar().ToString();
+
+                res = int.Parse(resStr);
+
+                connection.Close();
+
+                return res;
+            }
+            catch (MySqlException ex) {
+                return res;
             }
         }
     }

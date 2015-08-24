@@ -42,7 +42,7 @@ namespace ClienteCorreo.Utils
                 {
                     MailMessage mensaje = cliente.GetMessage(i).ToMailMessage();
 
-                    String fechaStr = cliente.GetMessageHeaders(i).DateSent.ToShortDateString();
+                    String fechaStr = cliente.GetMessageHeaders(i).DateSent.ToString("dd/MM/yyyy");
 
                     mensaje.Subject = mensaje.Subject + fechaStr;
 
